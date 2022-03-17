@@ -40,11 +40,16 @@ public:
     }
     friend istream& operator>>(istream& in, Film &ob)
     {   cout<<"Nume : ";
-        in>>ob.denumire_film;
+        char c;
+        cin>>c;
+        in.getline(ob.denumire_film, sizeof(ob.denumire_film));
+        for(int i=strlen(ob.denumire_film)+1;i>=1;i--)
+            ob.denumire_film[i]=ob.denumire_film[i-1];
+        ob.denumire_film[0]=c;
         cout<<'\n'<<"Gen : ";
-        in>>ob.gen;
+        in.getline(ob.gen,sizeof(ob.gen));
         cout<<'\n'<<"Regizor : ";
-        in>>ob.regizor;
+        in.getline(ob.regizor,sizeof(ob.regizor));
         cout<<'\n'<<"Rating : ";
         in>>ob.rating;
         cout<<'\n';
@@ -124,38 +129,15 @@ void unu()
     }
     for(int i=1;i<=o;i++)
     {   cout<<"Filmul "<<i<<":"<<'\n';
-        cout<<"Nume: ";
-        char nume[100];
-        ///cin.get();
-        cin.getline(nume,100);
-        p[n+i].set_denumire_film(nume);
-        cout<<'\n';
-        cout<<"Regizor: ";
-        char reg[100];
-        ///cin.get();
-        cin.getline(reg,100);
-        p[n+i].set_regizor(reg);
-        cout<<'\n';
-        cout<<"Gen: ";
-        char genul[100];
-        ///cin.get();
-        cin.getline(genul,100);
-        p[n+i].set_gen(genul);
-        cout<<'\n';
-        cout<<"Rating: ";
-        int rat;
-        cin>>rat;
-        cout<<'\n';
-        if(rat<0)
-        {   rat=0;
-            cout<<"Valorile mai mici ca 0 nu se accepta. Rating-ul a fost setata la 0"<<'\n';
+        cin>>p[i];
+        if(p[i].get_rating()>5)
+        {   p[i].set_rating(5);
+            cout<<"Valorile mai mari ca 5 nu se accepta. Rating-ul a fost setat la 5"<<'\n';
         }
-        if(rat>5)
-        {   rat=5;
-            cout<<"Valorile mai mari ca 5 nu se accepta. Rating-ul a fost setata la 5"<<'\n';
+        if(p[i].get_rating()<0)
+        {   p[i].set_rating(0);
+            cout<<"Valorile mai mici ca 0 nu se accepta. Rating-ul a fost setat la 5"<<'\n';
         }
-        p[n+i].set_rating(rat);
-        cin.get();
     }
     n=n+o;
     return;
@@ -245,6 +227,14 @@ void trei()
     if(ok==1)
     {   cout<<"Noul rating = ";
         cin>>sch;
+        if(sch>5)
+        {   cout<<"Valorile mai mari ca 5 nu se accepta. Rating-ul a fost setat la 5"<<'\n';
+            sch=5;
+        }
+        if(sch<0)
+        {   cout<<"Valorile mai mici ca 0 nu se accepta. Rating-ul a fost setat la 0"<<'\n';
+            sch=0;
+        }
         p[ord].set_rating(sch);
         cout<<'\n';
     }
